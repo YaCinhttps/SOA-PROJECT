@@ -115,47 +115,82 @@ async function deletePerson(id) {
 /* =======================
    5. RECHERCHE
 ======================= */
+function showNoResults() {
+    const table = document.getElementById("personTable");
+    table.innerHTML = `
+        <tr>
+            <td colspan="3" class="text-center text-muted py-4">
+                 Aucun Resultat
+            </td>
+        </tr>
+    `;
+}
+
+
+
+function renderPersons(persons) {
+    const table = document.getElementById("personTable");
+
+    if (!persons.length) {
+        showNoResults();
+        return;
+    }
+
+    table.innerHTML = persons.map(p => `
+        <tr class="animate-row">
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>
+                <button class="btn btn-warning btn-sm me-2"
+                        onclick="openEditModal(${p.id})">
+                    Modifier
+                </button>
+                <button class="btn btn-danger btn-sm"
+                        onclick="deletePerson(${p.id})">
+                    Supprimer
+                </button>
+            </td>
+        </tr>
+    `).join("");
+}
+
 async function searchPerson() {
     const query = document.getElementById("searchName").value.trim();
 
+    // If input empty → fetch all
     if (!query) {
         fetchPersons();
         return;
     }
 
-    let url = API_URL;
+    let url;
 
-    if (!isNaN(query)) {
+    // Numeric input → search by ID
+    if (/^\d+$/.test(query)) {
         url = `${API_URL}/${query}`;
-    } else {
-        url = `${API_URL}/search?name=${query}`;
+    } 
+    // Text input → search by name
+    else {
+        url = `${API_URL}/search?name=${encodeURIComponent(query)}`;
     }
 
     try {
         const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("No results");
+        }
+
         const data = await response.json();
         const persons = Array.isArray(data) ? data : [data];
 
-        const table = document.getElementById("personTable");
-        table.innerHTML = persons.map(p => `
-            <tr>
-                <td>${p.id}</td>
-                <td>${p.name}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="openEditModal(${p.id})">
-                        Modifier
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="deletePerson(${p.id})">
-                        Supprimer
-                    </button>
-                </td>
-            </tr>
-        `).join("");
+        renderPersons(persons);
 
-    } catch (e) {
-        console.error("Aucun résultat trouvé", e);
+    } catch (error) {
+        showNoResults();
     }
 }
+
 
 /* =======================
    6. DÉMARRAGE

@@ -68,5 +68,5 @@ La vidéo présente : Connexion DB, Test de l'API, et flux CRUD complet.
 
 8. AUTEURS
 ---------
-HARBAOUI YASSINE GROUPE 3 - MOHAMED AMINE NOUMA GROUPE 4 
+HARBAOUI YASSINE GROUPE 4 - MOHAMED AMINE NOUMA GROUPE 3
 ===========================================================

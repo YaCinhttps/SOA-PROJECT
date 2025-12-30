@@ -63,7 +63,7 @@ C. FRONTEND (VS Code)
 
 7. VIDEO DE DEMONSTRATION
 -------------------------
-[LIEN VERS LA VIDEO ICI : YouTube ou Google Drive]
+https://drive.google.com/file/d/1vR7lVXABAedq-bCwV5rhdHP53B8k0QUq/view?usp=sharing
 La vidéo présente : Connexion DB, Test de l'API, et flux CRUD complet.
 
 8. AUTEURS
